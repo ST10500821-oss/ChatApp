@@ -14,7 +14,7 @@ public class Login {
     
 
     public boolean checkUserName(String username) {
-        return username.contains("_") && username.length() <= 5 ;
+        return username.contains("_") && username.length() >= 5 && username.length() <= 15;
     }
 
     public boolean checkPasswordComplexity(String password) {

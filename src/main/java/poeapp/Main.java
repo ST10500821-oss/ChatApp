@@ -1,11 +1,12 @@
 package poeapp;
 
 import java.util.Scanner;
+import poeapp.MessageManager;
 
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        
+
         // Step 1: Registration process
         System.out.println("=== Registration ===");
 
@@ -13,7 +14,7 @@ public class Main {
         String firstName = scanner.nextLine();
         System.out.print("Enter last name: ");
         String lastName = scanner.nextLine();
-        
+
         // Use the firstName and lastName during registration
         Login login = new Login();
 
@@ -39,9 +40,88 @@ public class Main {
         String loginStatus = login.returnLoginStatus(loginUser, loginPass);
         System.out.println(loginStatus);
 
+        // Only proceed if login successful
+        if (loginStatus.startsWith("Welcome")) {
+            System.out.println("\nWelcome to QuickChat.");
+            int choice = -1;
+            MessageManager manager = new MessageManager();
+
+            while (choice != 3) {
+                System.out.println("\nChoose an option:");
+                System.out.println("1) Send Messages");
+                System.out.println("2) Show Recently Sent Messages");
+                System.out.println("3) Quit");
+                choice = scanner.nextInt();
+                scanner.nextLine(); // Consume newline
+
+                switch (choice) {
+                    case 1:
+                        System.out.print("How many messages do you want to send? ");
+                        int total = scanner.nextInt();
+                        scanner.nextLine();
+
+                        for (int i = 1; i <= total; i++) {
+                            System.out.println("\nMessage #" + i);
+                            System.out.print("Enter recipient number (+...): ");
+                            String recipient = scanner.nextLine();
+
+                            System.out.print("Enter message text: ");
+                            String text = scanner.nextLine();
+
+                            Message msg = new Message(i, recipient, text);
+
+                            // Validate
+                            if (!msg.checkRecipientCell()) {
+                                System.out.println("Cell phone number is incorrectly formatted...");
+                                i--;
+                                continue;
+                            }
+
+                            String valid = msg.validateMessage();
+                            System.out.println(valid);
+                            if (valid.startsWith("Message exceeds")) {
+                                i--;
+                                continue;
+                            }
+
+                            System.out.println("Choose:");
+                            System.out.println("1) Send Message");
+                            System.out.println("2) Disregard");
+                            System.out.println("3) Store to send later");
+                            int opt = scanner.nextInt();
+                            scanner.nextLine();
+
+                            String result = msg.sendMessageOption(opt);
+                            System.out.println(result);
+
+                            if (opt == 1) {
+                                manager.addMessage(msg);
+                            } else if (opt == 3) {
+                                manager.addMessage(msg);
+                                manager.storeMessagesToJson("messages.json");
+                            }
+                        }
+
+                        System.out.println("\nAll messages sent. Total: " + manager.returnTotalMessages());
+                        manager.printAllMessages();
+                        break;
+
+                    case 2:
+                        System.out.println("Coming Soon.");
+                        break;
+
+                    case 3:
+                        System.out.println("Exiting...");
+                        break;
+
+                    default:
+                        System.out.println("Invalid choice.");
+                }
+            }
+        } else {
+            System.out.println("Access denied. Exiting application.");
+        }
+
         scanner.close();
     }
 }
-
-
-//o
