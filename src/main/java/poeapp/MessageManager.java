@@ -60,3 +60,4 @@ public class MessageManager {
 //Enter password: Meja@2602!
 //Enter cellphone (+countrycode): +27680311267
 //Username invalid: must contain underscore and be 5-15 characters.
+//Enter recipent number (+countrycode): +27680311277 +27680313421 +2768036578

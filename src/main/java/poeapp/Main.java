@@ -4,6 +4,7 @@ import java.util.Scanner;
 import poeapp.MessageManager;
 
 public class Main {
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
@@ -51,6 +52,14 @@ public class Main {
                 System.out.println("1) Send Messages");
                 System.out.println("2) Show Recently Sent Messages");
                 System.out.println("3) Quit");
+
+                // Input validation for menu choice
+                if (!scanner.hasNextInt()) {
+                    System.out.println("Invalid input. Please enter a number between 1 and 3.");
+                    scanner.nextLine();
+                    continue;
+                }
+
                 choice = scanner.nextInt();
                 scanner.nextLine(); // Consume newline
 
@@ -70,13 +79,14 @@ public class Main {
 
                             Message msg = new Message(i, recipient, text);
 
-                            // Validate
+                            // Validate recipient
                             if (!msg.checkRecipientCell()) {
                                 System.out.println("Cell phone number is incorrectly formatted...");
                                 i--;
                                 continue;
                             }
 
+                            // Validate message length
                             String valid = msg.validateMessage();
                             System.out.println(valid);
                             if (valid.startsWith("Message exceeds")) {
@@ -107,7 +117,14 @@ public class Main {
                         break;
 
                     case 2:
-                        System.out.println("Coming Soon.");
+                        // ? Fixed "Show Recently Sent Messages"
+                        if (manager.returnTotalMessages() == 0) {
+                            System.out.println("No messages have been sent yet.");
+                        } else {
+                            System.out.println("\n=== Recently Sent Messages ===");
+                            manager.printAllMessages();
+                            System.out.println("Total messages: " + manager.returnTotalMessages());
+                        }
                         break;
 
                     case 3:
