@@ -1,7 +1,6 @@
 package poeapp;
 
 import java.util.Scanner;
-import poeapp.MessageManager;
 
 public class Main {
 
@@ -16,7 +15,6 @@ public class Main {
         System.out.print("Enter last name: ");
         String lastName = scanner.nextLine();
 
-        // Use the firstName and lastName during registration
         Login login = new Login();
 
         System.out.print("Enter username: ");
@@ -79,7 +77,7 @@ public class Main {
 
                             Message msg = new Message(i, recipient, text);
 
-                            // Validate recipient
+                            // Validate recipient number
                             if (!msg.checkRecipientCell()) {
                                 System.out.println("Cell phone number is incorrectly formatted...");
                                 i--;
@@ -105,24 +103,53 @@ public class Main {
                             System.out.println(result);
 
                             if (opt == 1) {
-                                manager.addMessage(msg);
+                                manager.addMessage(msg, "Sent");
+                            } else if (opt == 2) {
+                                manager.addMessage(msg, "Disregard");
                             } else if (opt == 3) {
-                                manager.addMessage(msg);
+                                manager.addMessage(msg, "Stored");
                                 manager.storeMessagesToJson("messages.json");
                             }
                         }
 
-                        System.out.println("\nAll messages sent. Total: " + manager.returnTotalMessages());
-                        manager.printAllMessages();
+                        System.out.println("\nAll messages processed. Total: " + manager.returnTotalMessages());
+
+                        // ===== PART 3 TASKS =====
+                        System.out.println("\n--- PART 3 TASKS ---");
+
+                        // a) Display all sent messages
+                        manager.displaySentMessages();
+
+                        // b) Display the longest sent message
+                        manager.displayLongestMessage();
+
+                        // c) Search for a message by ID
+                        System.out.print("\nEnter a Message ID to search: ");
+                        String searchId = scanner.nextLine();
+                        manager.searchByMessageID(searchId);
+
+                        // d) Search all messages sent/stored to a recipient
+                        System.out.print("\nEnter recipient number to view all messages: ");
+                        String searchRecipient = scanner.nextLine();
+                        manager.searchByRecipient(searchRecipient);
+
+                        // e) Delete a message using its hash
+                        Message firstMessage = manager.getFirstSentMessage();
+                        if (firstMessage != null) {
+                            String hashToDelete = firstMessage.getMessageHash();
+                            manager.deleteMessageByHash(hashToDelete);
+                        }
+
+                        // f) Display a full report
+                        manager.displayReport();
                         break;
 
                     case 2:
-                        // ? Fixed "Show Recently Sent Messages"
                         if (manager.returnTotalMessages() == 0) {
                             System.out.println("No messages have been sent yet.");
                         } else {
                             System.out.println("\n=== Recently Sent Messages ===");
-                            manager.printAllMessages();
+                            manager.displaySentMessages();
                             System.out.println("Total messages: " + manager.returnTotalMessages());
                         }
                         break;
@@ -132,7 +159,7 @@ public class Main {
                         break;
 
                     default:
-                        System.out.println("Invalid choice.");
+                        System.out.println("Invalid choice. Please try again.");
                 }
             }
         } else {
