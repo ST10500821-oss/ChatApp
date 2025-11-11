@@ -6,14 +6,14 @@ import java.io.FileWriter;
 
 public class MessageManager {
 
-    // ====== ARRAYS REQUIRED BY TASK ======
+    // RRAYS REQUIRED BY TASK 
     private List<Message> sentMessages = new ArrayList<>();
     private List<Message> disregardedMessages = new ArrayList<>();
     private List<Message> storedMessages = new ArrayList<>();
     private List<String> messageHashes = new ArrayList<>();
     private List<String> messageIDs = new ArrayList<>();
 
-    // ====== ADD MESSAGE BASED ON FLAG ======
+    //  ADD MESSAGE BASED ON FLAG 
     public void addMessage(Message m, String flag) {
         switch (flag.toLowerCase()) {
             case "sent":
@@ -35,7 +35,7 @@ public class MessageManager {
         messageIDs.add(m.getMessageId());
     }
 
-    // ====== SHOW ALL SENT MESSAGES ======
+    // For showing the the texts
     public void displaySentMessages() {
         System.out.println("\n=== SENT MESSAGES ===");
         for (Message m : sentMessages) {
@@ -46,7 +46,7 @@ public class MessageManager {
         }
     }
 
-    // ====== FIND LONGEST SENT MESSAGE ======
+    // finding the logest message 
     public void displayLongestMessage() {
         String longest = "";
         for (Message m : sentMessages) {
@@ -57,7 +57,7 @@ public class MessageManager {
         System.out.println("\nLongest Sent Message:\n" + longest);
     }
 
-    // ====== SEARCH BY MESSAGE ID ======
+    // THis is for searching using the message id
     public void searchByMessageID(String id) {
         System.out.println("\nSearching for Message ID: " + id);
         for (Message m : sentMessages) {
@@ -70,7 +70,7 @@ public class MessageManager {
         System.out.println("Message ID not found.");
     }
 
-    // ====== SEARCH BY RECIPIENT ======
+    // search by reciepeint 
     public void searchByRecipient(String recipient) {
         System.out.println("\nMessages sent or stored to: " + recipient);
 
@@ -86,7 +86,7 @@ public class MessageManager {
         }
     }
 
-    // ====== DELETE USING HASH ======
+    //  this is for deleting using the hash 
     public void deleteMessageByHash(String hash) {
         for (Message m : sentMessages) {
             if (m.getMessageHash().equals(hash)) {
@@ -98,7 +98,7 @@ public class MessageManager {
         System.out.println("\nMessage not found for hash: " + hash);
     }
 
-    // ====== REPORT ======
+    // The Report 
     public void displayReport() {
         System.out.println("\n=== SENT MESSAGES REPORT ===");
         for (Message m : sentMessages) {
@@ -110,7 +110,7 @@ public class MessageManager {
         }
     }
 
-    // ====== OPTIONAL HELPERS ======
+    // Thesea are otional helpers 
     public int returnTotalMessages() {
         return sentMessages.size();
     }
@@ -143,7 +143,7 @@ public class MessageManager {
         }
     }
 
-    // ====== FIX FOR MAIN.JAVA ======
+    // showing message messages sent first 
     public Message getFirstSentMessage() {
         if (!sentMessages.isEmpty()) {
             return sentMessages.get(0);
